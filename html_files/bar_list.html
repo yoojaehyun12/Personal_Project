@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>커스텀 제조 - BlendBot-Zero</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            /* 진짜 체크박스와 라디오 버튼 숨기기 */
+            .hidden-input { display: none; }
+            
+            /* 아이템 카드 디자인 */
+            .item-card {
+                border: 2px solid #e0e0e0; border-radius: 12px; padding: 20px;
+                text-align: center; cursor: pointer; transition: all 0.2s;
+                background-color: white; display: block;
+            }
+            .item-card:hover { background-color: #f8f9fa; transform: translateY(-3px); }
+
+            /* 선택되었을 때 */
+            .hidden-input:checked + .item-card {
+                border-color: #343a40; background-color: #343a40; color: white;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            }
+            /* 비활성화되었을 때 */
+            .hidden-input:disabled + .item-card { opacity: 0.4; cursor: not-allowed; }
+
+            /* 모바일 대응 폰트 */
+            .page-title { font-size: 5vw; font-weight: 800; }
+            @media (min-width: 992px) { .page-title { font-size: 48px; } }
+        </style>
+    </head>
+    <body class="bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <a class="navbar-brand font-weight-bold" href="./main.html">BlendBot-Zero</a>
+            </nav>
+
+        <div class="container mt-5 mb-5">
+            <div class="mb-4">
+                <a href="./intro.html" class="btn btn-outline-secondary rounded-pill px-4">
+                    ← 이전 메뉴로
+                </a>
+            </div>
+
+            <div class="text-center mb-5">
+                <h1 class="page-title mb-3">나만의 목테일 설계</h1>
+                <p class="text-primary font-weight-bold" id="status-message">원하는 재료를 조합해 로봇에게 명령을 내려보세요.</p>
+            </div>
+
+            <form id="orderForm">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <h4 class="font-weight-bold mb-4">Step 1. 베이스 선택 (택 1)</h4>
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="w-100">
+                                    <input type="radio" name="base" value="water" class="hidden-input" required>
+                                    <div class="item-card">💧 생수</div>
+                                </label>
+                            </div>
+                            <div class="col-4">
+                                <label class="w-100">
+                                    <input type="radio" name="base" value="sparkling" class="hidden-input">
+                                    <div class="item-card">🫧 탄산수</div>
+                                </label>
+                            </div>
+                            <div class="col-4">
+                                <label class="w-100">
+                                    <input type="radio" name="base" value="tonic" class="hidden-input">
+                                    <div class="item-card">🍾 토닉워터</div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <h4 class="font-weight-bold mb-4">Step 2. 디테일 설정(얼음은 빼기로 해주세요..)</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <h6 class="text-muted mb-3">얼음</h6>
+                                <div class="d-flex" style="gap: 10px;">
+                                    <label class="flex-fill">
+                                        <input type="radio" name="ice" value="yes" class="hidden-input" checked>
+                                        <div class="item-card py-2">🧊 넣기</div>
+                                    </label>
+                                    <label class="flex-fill">
+                                        <input type="radio" name="ice" value="no" class="hidden-input">
+                                        <div class="item-card py-2">🚫 빼기</div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-3">베이스 양 (추출 시간 연동)</h6>
+                                <div class="d-flex" style="gap: 10px;">
+                                    <label class="flex-fill">
+                                        <input type="radio" name="amount" value="less" class="hidden-input">
+                                        <div class="item-card py-2">적게</div>
+                                    </label>
+                                    <label class="flex-fill">
+                                        <input type="radio" name="amount" value="normal" class="hidden-input" checked>
+                                        <div class="item-card py-2">보통</div>
+                                    </label>
+                                    <label class="flex-fill">
+                                        <input type="radio" name="amount" value="more" class="hidden-input">
+                                        <div class="item-card py-2">많이</div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm mb-5">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="font-weight-bold m-0">Step 3. 첨가 재료</h4>
+                            <span class="badge badge-dark p-2" id="count-badge">0 / 2 선택됨</span>
+                        </div>
+                        <p class="text-danger small">※ 로봇 동선 최적화를 위해 최대 2개까지만 선택 가능합니다.</p>
+                        
+                        <div class="row">
+                            <div class="col-6 col-md-3 mb-3">
+                                <label class="w-100"><input type="checkbox" name="ingredient" value="lemon" class="hidden-input ingredient-cb"><div class="item-card">🍋 레몬</div></label>
+                            </div>
+                            <div class="col-6 col-md-3 mb-3">
+                                <label class="w-100"><input type="checkbox" name="ingredient" value="orange" class="hidden-input ingredient-cb"><div class="item-card">🍊 오렌지</div></label>
+                            </div>
+                            <div class="col-6 col-md-3 mb-3">
+                                <label class="w-100"><input type="checkbox" name="ingredient" value="pomegranate" class="hidden-input ingredient-cb"><div class="item-card">🍒 석류</div></label>
+                            </div>
+                            <div class="col-6 col-md-3 mb-3">
+                                <label class="w-100"><input type="checkbox" name="ingredient" value="mint" class="hidden-input ingredient-cb"><div class="item-card">🌿 민트</div></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-dark btn-lg px-5 py-3 shadow" onclick="submitOrder()" style="border-radius: 50px;">
+                        🍸 바텐더 로봇에게 전송하기
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <script>
+            // 2개 제한 로직
+            const checkboxes = document.querySelectorAll('.ingredient-cb');
+            const countBadge = document.getElementById('count-badge');
+
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', () => {
+                    const checkedCount = document.querySelectorAll('.ingredient-cb:checked').length;
+                    countBadge.innerText = `${checkedCount} / 2 선택됨`;
+                    checkboxes.forEach(box => {
+                        if (!box.checked) box.disabled = (checkedCount >= 2);
+                    });
+                });
+            });
+
+            // 🌟 수정 2: 모든 추천 메뉴 이름 매핑 🌟
+            window.onload = function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const menu = urlParams.get('menu');
+                
+                // 파라미터 값에 따른 실제 메뉴 이름 사전
+                const menuNames = {
+                    'sunrise': '상큼 폭발 썬라이즈',
+                    'refresh': '제로 칼로리 리프레셔',
+                    'einspanner': '몽글몽글 아인슈페너 폼 모히토'
+                };
+                
+                // 만약 전달받은 메뉴가 사전에 있다면 메시지를 띄움
+                if (menuNames[menu]) {
+                    document.getElementById('status-message').innerText = `✨ '${menuNames[menu]}' 레시피가 세팅되었습니다. 그대로 전송하거나 수정해보세요!`;
+                } else if (menu === 'custom') {
+                    document.getElementById('status-message').innerText = "✨ 자유롭게 나만의 레시피를 만들어보세요!";
+                }
+            };
+
+            // 🌟 수정 3: 대기열(Queue) 시스템 시뮬레이션 🌟
+            function submitOrder() {
+                const form = document.getElementById('orderForm');
+                const formData = new FormData(form);
+                
+                if(!formData.get('base')) {
+                    alert("⚠️ 베이스 음료를 꼭 선택해주세요!");
+                    return;
+                }
+
+                // 가상의 서버 응답 딜레이 (서버가 대기 인원을 파악하는 시간)
+                const isRobotBusy = Math.random() < 0.6; // 60% 확률로 로봇이 앞선 주문을 처리 중이라고 가정
+
+                if (isRobotBusy) {
+                    // 예약 상태
+                    const queueNumber = Math.floor(Math.random() * 3) + 1; // 1~3명 대기 중
+                    alert(`🕒 [주문 예약 완료]\n현재 대기 인원: ${queueNumber}명\n\n로봇이 앞선 주문을 마치는 대로 즉시 제조를 시작합니다!`);
+                } else {
+                    // 즉시 실행 상태
+                    alert(`🚀 [주문 전송 완료]\n로봇이 비어있습니다. 즉시 음료 제조를 시작합니다!`);
+                }
+                
+                // TODO: 실제 파이썬 소켓 전송 코드 삽입 위치
+            }
+        </script>
+    </body>
+</html>

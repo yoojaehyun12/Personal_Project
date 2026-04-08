@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>문의 - BlendBot-Zero</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            /* 연락처 카드 디자인 */
+            .contact-card {
+                border-radius: 15px;
+                border: none;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            }
+            /* 지도 컨테이너 디자인 (모서리 둥글게) */
+            .map-container {
+                border-radius: 15px;
+                overflow: hidden; 
+                box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+                height: 100%;
+                min-height: 400px;
+            }
+            /* 아이콘에 들어가는 동그란 배경 */
+            .icon-box {
+                width: 45px;
+                height: 45px;
+                background-color: #f8f9fa;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.3rem;
+            }
+        </style>
+    </head>
+    <body class="bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <a class="navbar-brand font-weight-bold" href="./main.html">BlendBot-Zero</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item mx-5"><a class="nav-link" href="./main.html">메인</a></li>
+                    <li class="nav-item mx-5"><a class="nav-link" href="./intro.html">소개</a></li>
+                    <li class="nav-item mx-5"><a class="nav-link" href="./bar_list.html">칵테일</a></li>
+                    <li class="nav-item active mx-5"><a class="nav-link font-weight-bold" href="./gita.html">문의</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container mt-5 mb-5 pt-4">
+            <div class="text-center mb-5">
+                <h1 class="font-weight-bold mb-3" style="letter-spacing: -0.05em;">Contact Us</h1>
+                <p class="text-muted">BlendBot-Zero 프로젝트 관련 문의사항이나 로봇실 방문 예약을 남겨주세요.</p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-7 mb-4">
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3224.2346768853473!2d128.9203585152862!3d35.97194168015024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x356669cc13c849ad%3A0xf27f7e1abfcb086f!2z7ZWc6rWt7Y-066as7YWN64yA7ZWZIOuhnOuzu-y6oO2NvOyKpA!5e0!3m2!1sko!2skr!4v1684000000000!5m2!1sko!2skr" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+
+                <div class="col-lg-5 mb-4">
+                    <div class="card contact-card h-100 p-4">
+                        <div class="card-body p-0 d-flex flex-column justify-content-center">
+                            <h3 class="font-weight-bold mb-4">오시는 길</h3>
+                            
+                            <div class="d-flex mb-4 align-items-start">
+                                <div class="icon-box mr-3">📍</div>
+                                <div>
+                                    <h6 class="font-weight-bold mb-1">위치</h6>
+                                    <p class="text-muted mb-0">경상북도 영천시 로봇캠퍼스로 1<br>(한국폴리텍대학 로봇캠퍼스 응용로봇실습실 4층)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex mb-4 align-items-start">
+                                <div class="icon-box mr-3">📞</div>
+                                <div>
+                                    <h6 class="font-weight-bold mb-1">전화번호</h6>
+                                    <p class="text-muted mb-0">010-7520-5760 (개발자 재현)</p>
+                                </div>
+                            </div>
+
+                            <div class="d-flex mb-4 align-items-start">
+                                <div class="icon-box mr-3">✉️</div>
+                                <div>
+                                    <h6 class="font-weight-bold mb-1">이메일</h6>
+                                    <p class="text-muted mb-0">yslylove1234@gmail.com</p>
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+                            
+                            <h6 class="font-weight-bold mb-3">운영 시간</h6>
+                            <p class="text-muted mb-1">평일: 09:00 ~ 18:00 (로봇실 개방 시간)</p>
+                            <p class="text-muted mb-0 text-danger">주말 및 공휴일: 시스템 점검</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
