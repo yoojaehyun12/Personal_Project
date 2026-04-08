@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>BlendBot-Zero</title>
-        <link href="../yjhvenv/bootstrap4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="/static/bootstrap4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <style>
             .menu-card {
                 transition: transform 0.2s;
@@ -36,23 +36,23 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="../html_files/main.html">BlendBot-Zero</a>
+            <a class="navbar-brand" href="/">BlendBot-Zero</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item active mx-5">
-                    <a class="nav-link" href="../html_files/main.html">메인<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/">메인<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active mx-5">
-                    <a class="nav-link" href="../html_files/intro.html">소개<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/intro">소개<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active mx-5">
-                    <a class="nav-link" href="../html_files/bar_list.html">칵테일</a>
+                    <a class="nav-link" href="/bar_list">칵테일</a>
                 </li>
                 <li class="nav-item active mx-5">
-                    <a class="nav-link" href="../html_files/gita.html">문의<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/gita">문의<span class="sr-only">(current)</span></a>
                 </li>
             </ul>
                 <form class="form-inline my-2 my-lg-0">
@@ -108,7 +108,7 @@
                             </p>
                             
                             <div class="text-center mt-auto">
-                                <a href="../html_files/bar_list.html?mode=custom" class="btn btn-outline-dark btn-lg px-5">직접 만들기</a>
+                                <a href="/bar_list" class="btn btn-outline-dark btn-lg px-5">직접 만들기</a>
                             </div>
                         </div>
                     </div>
@@ -120,8 +120,8 @@
             function goNextWithRecommend() {
                 const selectedMenu = document.querySelector('input[name="recommendItem"]:checked');
                 if (selectedMenu) {
-                    // bar_list.html 경로도 ../html_files/ 로 맞췄습니다.
-                    window.location.href = "../html_files/bar_list.html?menu=" + selectedMenu.value;
+                    // 🌟 수정됨: .html 확장자 제거
+                    window.location.href = "/bar_list?menu=" + selectedMenu.value;
                 } else {
                     alert("추천 메뉴를 먼저 하나 선택해 주세요!");
                 }

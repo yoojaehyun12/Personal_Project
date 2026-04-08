@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>문의 - BlendBot-Zero</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/bootstrap4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <style>
             /* 연락처 카드 디자인 */
             .contact-card {
@@ -33,17 +33,25 @@
     </head>
     <body class="bg-light">
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-            <a class="navbar-brand font-weight-bold" href="./main.html">BlendBot-Zero</a>
+            <a class="navbar-brand font-weight-bold" href="/">BlendBot-Zero</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item mx-5"><a class="nav-link" href="./main.html">메인</a></li>
-                    <li class="nav-item mx-5"><a class="nav-link" href="./intro.html">소개</a></li>
-                    <li class="nav-item mx-5"><a class="nav-link" href="./bar_list.html">칵테일</a></li>
-                    <li class="nav-item active mx-5"><a class="nav-link font-weight-bold" href="./gita.html">문의</a></li>
-                </ul>
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item active mx-5">
+                    <a class="nav-link" href="/">메인<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active mx-5">
+                    <a class="nav-link" href="/intro">소개<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active mx-5">
+                    <a class="nav-link" href="/bar_list">칵테일</a>
+                </li>
+                <li class="nav-item active mx-5">
+                    <a class="nav-link" href="/gita">문의<span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
             </div>
         </nav>
 

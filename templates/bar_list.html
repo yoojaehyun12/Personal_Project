@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>커스텀 제조 - BlendBot-Zero</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/bootstrap4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <style>
             /* 진짜 체크박스와 라디오 버튼 숨기기 */
             .hidden-input { display: none; }
@@ -30,12 +30,12 @@
     </head>
     <body class="bg-light">
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-            <a class="navbar-brand font-weight-bold" href="./main.html">BlendBot-Zero</a>
-            </nav>
+            <a class="navbar-brand font-weight-bold" href="/">BlendBot-Zero</a>
+        </nav>
 
         <div class="container mt-5 mb-5">
             <div class="mb-4">
-                <a href="./intro.html" class="btn btn-outline-secondary rounded-pill px-4">
+                <a href="/intro" class="btn btn-outline-secondary rounded-pill px-4">
                     ← 이전 메뉴로
                 </a>
             </div>
@@ -158,7 +158,7 @@
                 });
             });
 
-            // 🌟 수정 2: 모든 추천 메뉴 이름 매핑 🌟
+            // 모든 추천 메뉴 이름 매핑
             window.onload = function() {
                 const urlParams = new URLSearchParams(window.location.search);
                 const menu = urlParams.get('menu');
@@ -178,7 +178,7 @@
                 }
             };
 
-            // 🌟 수정 3: 대기열(Queue) 시스템 시뮬레이션 🌟
+            // 대기열(Queue) 시스템 시뮬레이션
             function submitOrder() {
                 const form = document.getElementById('orderForm');
                 const formData = new FormData(form);
@@ -188,20 +188,36 @@
                     return;
                 }
 
-                // 가상의 서버 응답 딜레이 (서버가 대기 인원을 파악하는 시간)
-                const isRobotBusy = Math.random() < 0.6; // 60% 확률로 로봇이 앞선 주문을 처리 중이라고 가정
+                // 파이썬으로 보낼 JSON 데이터 만들기
+                const orderData = {
+                    base: formData.get('base'),
+                    ice: formData.get('ice'),
+                    amount: formData.get('amount'),
+                    ingredients: formData.getAll('ingredient')
+                };
 
-                if (isRobotBusy) {
-                    // 예약 상태
-                    const queueNumber = Math.floor(Math.random() * 3) + 1; // 1~3명 대기 중
-                    alert(`🕒 [주문 예약 완료]\n현재 대기 인원: ${queueNumber}명\n\n로봇이 앞선 주문을 마치는 대로 즉시 제조를 시작합니다!`);
-                } else {
-                    // 즉시 실행 상태
-                    alert(`🚀 [주문 전송 완료]\n로봇이 비어있습니다. 즉시 음료 제조를 시작합니다!`);
-                }
+                // 파이썬 서버('/api/order')로 데이터 쏘기 (Fetch API 사용)
+                fetch('/api/order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // 파이썬 서버가 성공적으로 받았다고 응답하면 뜨는 알림창
+                    if(data.status === 'success') {
+                        alert(`🚀 [주문 전송 완료]\n\n${data.message}`);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert("통신 에러! 서버가 켜져 있는지 확인해 주세요.");
+                });
+            }
                 
                 // TODO: 실제 파이썬 소켓 전송 코드 삽입 위치
-            }
         </script>
     </body>
 </html>
