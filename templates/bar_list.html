@@ -141,9 +141,113 @@
                     </button>
                 </div>
             </form>
+
+            <div class="card border-0 shadow-sm mt-5">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="font-weight-bold m-0">로봇 제조 상태</h4>
+                        <span class="badge badge-secondary p-2" id="queue-count">대기 0건</span>
+                    </div>
+
+                    <div id="current-order-empty" class="text-muted">
+                        현재 진행 중인 주문이 없습니다.
+                    </div>
+
+                    <div id="current-order-panel" style="display: none;">
+                        <div class="d-flex justify-content-between mb-2">
+                            <strong id="current-order-title">주문 처리 중</strong>
+                            <span id="current-order-stage" class="text-primary font-weight-bold">queued</span>
+                        </div>
+                        <div class="progress mb-3" style="height: 22px;">
+                            <div id="current-order-progress" class="progress-bar bg-dark" role="progressbar" style="width: 0%;">
+                                0%
+                            </div>
+                        </div>
+                        <p id="current-order-message" class="mb-0 text-muted"></p>
+                    </div>
+
+                    <hr>
+
+                    <h6 class="font-weight-bold mb-3">대기열</h6>
+                    <div id="queue-list" class="text-muted small">대기 중인 주문이 없습니다.</div>
+                </div>
+            </div>
         </div>
 
         <script>
+            const statusLabels = {
+                queued: '대기 중',
+                detecting: '비전 인식',
+                picking: 'Pick',
+                making: '제조',
+                serving: '서빙',
+                done: '완료',
+                failed: '실패'
+            };
+
+            function formatOrderName(order) {
+                if (!order || !order.payload) return '주문';
+                const baseNames = {
+                    water: '생수 베이스',
+                    sparkling: '탄산수 베이스',
+                    tonic: '토닉워터 베이스'
+                };
+                return `${baseNames[order.payload.base] || order.payload.base} 주문 #${order.id}`;
+            }
+
+            function renderQueue(queue) {
+                const queueList = document.getElementById('queue-list');
+
+                if (!queue || queue.length === 0) {
+                    queueList.className = 'text-muted small';
+                    queueList.innerHTML = '대기 중인 주문이 없습니다.';
+                    return;
+                }
+
+                queueList.className = 'list-group';
+                queueList.innerHTML = queue.map((order, index) => `
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>${index + 1}. ${formatOrderName(order)}</span>
+                        <span class="badge badge-light">${statusLabels[order.status] || order.status}</span>
+                    </div>
+                `).join('');
+            }
+
+            function renderCurrentOrder(order) {
+                const empty = document.getElementById('current-order-empty');
+                const panel = document.getElementById('current-order-panel');
+                const progressBar = document.getElementById('current-order-progress');
+
+                if (!order) {
+                    empty.style.display = 'block';
+                    panel.style.display = 'none';
+                    return;
+                }
+
+                empty.style.display = 'none';
+                panel.style.display = 'block';
+
+                document.getElementById('current-order-title').innerText = formatOrderName(order);
+                document.getElementById('current-order-stage').innerText = statusLabels[order.status] || order.status;
+                document.getElementById('current-order-message').innerText = order.message;
+
+                progressBar.style.width = `${order.progress}%`;
+                progressBar.innerText = `${order.progress}%`;
+            }
+
+            function refreshRobotStatus() {
+                fetch('/api/orders')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('queue-count').innerText = `대기 ${data.queue.length}건`;
+                        renderCurrentOrder(data.current_order);
+                        renderQueue(data.queue);
+                    })
+                    .catch(error => {
+                        console.error('Status refresh error:', error);
+                    });
+            }
+
             // 2개 제한 로직
             const checkboxes = document.querySelectorAll('.ingredient-cb');
             const countBadge = document.getElementById('count-badge');
@@ -209,6 +313,7 @@
                     // 파이썬 서버가 성공적으로 받았다고 응답하면 뜨는 알림창
                     if(data.status === 'success') {
                         alert(`🚀 [주문 전송 완료]\n\n${data.message}`);
+                        refreshRobotStatus();
                     }
                 })
                 .catch((error) => {
@@ -217,7 +322,8 @@
                 });
             }
                 
-                // TODO: 실제 파이썬 소켓 전송 코드 삽입 위치
+            refreshRobotStatus();
+            setInterval(refreshRobotStatus, 1000);
         </script>
     </body>
 </html>

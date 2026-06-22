@@ -1,0 +1,12 @@
+string order_id
+string drink_type
+string target_object
+string[] ingredients
+string serve_location
+---
+bool success
+string message
+---
+string stage
+int32 progress
+string message
