@@ -6,7 +6,7 @@ from rclpy.action import ActionServer
 from rclpy.node import Node
 
 from smart_barista_ros.action import MakeDrink
-from smart_barista_ros.robot_motion import Indy7Motion
+from robot_motion import Indy7Motion
 
 
 class BaristaActionServer(Node):
@@ -19,6 +19,8 @@ class BaristaActionServer(Node):
             "make_drink",
             self.execute_callback,
         )
+
+        self.robot = Indy7Motion(self)
 
         self.get_logger().info("Barista Action Server started.")
 
@@ -47,6 +49,14 @@ class BaristaActionServer(Node):
             goal_handle.publish_feedback(feedback)
 
             self.get_logger().info(f"{stage}: {progress}%")
+
+            if stage == "picking":
+                self.robot.pick(goal.target_object)
+            elif stage == "making":
+                self.robot.make_drink(goal.drink_type, list(goal.ingredients))
+            elif stage == "serving":
+                self.robot.serve(goal.serve_location)
+
             time.sleep(2)
 
         goal_handle.succeed()

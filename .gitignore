@@ -138,11 +138,17 @@ celerybeat.pid
 .env
 .envrc
 .venv
-env/
-yjhvenv/
+venv/
+myvenv/
 ENV/
 env.bak/
 venv.bak/
+__pycache__/
+*.pyc
+build/
+install/
+log/
+.ros/
 
 # Spyder project settings
 .spyderproject

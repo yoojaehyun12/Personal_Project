@@ -15,6 +15,7 @@ install(PROGRAMS
   smart_barista_ros/barista_action_server.py
   smart_barista_ros/vision_node.py
   smart_barista_ros/pick_place_node.py
+  smart_barista_ros/robot_motion.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
